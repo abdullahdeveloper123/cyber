@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -19,66 +19,6 @@ function MyProfile() {
     const [orders, setOrders] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
 
-    const loadUserStats = useCallback(() => {
-        // Get orders from localStorage
-        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-        const userOrders = orders.filter(order => order.userId === user?.uid);
-
-        // Get wishlist from localStorage
-        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-
-        // Get display name from user profile or localStorage
-        const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-        
-        setUserStats({
-            totalOrders: userOrders.length,
-            wishlistItems: wishlist.length,
-            displayName: savedProfile.displayName || user?.displayName || ''
-        });
-    }, [user]);
-
-    const loadOrders = useCallback(() => {
-        // Get real orders from localStorage
-        const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-        
-        // Filter orders for current user
-        const userOrders = savedOrders.filter(order => order.userId === user?.uid);
-        
-        // Transform cart data to order format if needed
-        const transformedOrders = userOrders.map(order => {
-            // If order doesn't have proper structure, transform it
-            if (!order.id || !order.date) {
-                return {
-                    id: order.id || `ORD-${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
-                    userId: order.userId || user?.uid,
-                    date: order.date || new Date().toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    status: order.status || 'Processing',
-                    items: order.items || order.products || [],
-                    shipping: order.shipping || {
-                        method: 'Standard Delivery',
-                        address: '2118 Thornridge Cir Syracuse, Connecticut 35624'
-                    },
-                    total: order.total || (order.items || order.products || []).reduce((sum, item) => 
-                        sum + (item.price * (item.quantity || 1)), 0
-                    )
-                };
-            }
-            return order;
-        });
-        
-        setOrders(transformedOrders);
-    }, [user]);
-
-    const loadWishlist = useCallback(() => {
-        // Load wishlist from localStorage
-        const savedWishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-        setWishlistItems(savedWishlist);
-    }, []);
-
     useEffect(() => {
         if (!user) {
             navigate('/login');
@@ -91,14 +31,77 @@ function MyProfile() {
         loadWishlist();
     }, [user, navigate, loadUserStats, loadOrders, loadWishlist]);
 
+    const loadUserStats = React.useCallback(() => {
+        // Get orders from localStorage
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const userOrders = orders.filter(order => order.userId === user?.uid);
+
+        // Get wishlist from localStorage
+        const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+        // Get display name from user profile or localStorage
+        const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+
+        setUserStats({
+            totalOrders: userOrders.length,
+            wishlistItems: wishlist.length,
+            displayName: savedProfile.displayName || user?.displayName || ''
+        });
+    }, [user]);
+
+    const loadOrders = React.useCallback(() => {
+        // Get real orders from localStorage
+        const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+        // Filter orders for current user
+        const userOrders = savedOrders.filter(order => order.userId === user?.uid);
+
+        // Transform cart data to order format if needed
+        const transformedOrders = userOrders.map(order => {
+            // If order doesn't have proper structure, transform it
+            if (!order.id || !order.date) {
+                return {
+                    id: order.id || `ORD-${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
+                    userId: order.userId || user?.uid,
+                    date: order.date || new Date().toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }),
+                    status: order.status || 'Processing',
+                    items: order.items || order.products || [],
+                    shipping: order.shipping || {
+                        method: 'Standard Delivery',
+                        address: '2118 Thornridge Cir Syracuse, Connecticut 35624'
+                    },
+                    total: order.total || (order.items || order.products || []).reduce((sum, item) =>
+                        sum + (item.price * (item.quantity || 1)), 0
+                    )
+                };
+            }
+            return order;
+        });
+
+        setOrders(transformedOrders);
+    }, [user]);
+
+    // Function to create order from cart (can be called from checkout)
+
+
+    const loadWishlist = React.useCallback(() => {
+        // Load wishlist from localStorage
+        const savedWishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+        setWishlistItems(savedWishlist);
+    }, []);
+
     const removeFromWishlist = (productId) => {
         const updatedWishlist = wishlistItems.filter(item => item.id !== productId);
         setWishlistItems(updatedWishlist);
         localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-        
+
         // Dispatch custom event to update navbar
         window.dispatchEvent(new CustomEvent('wishlistUpdated'));
-        
+
         // Update stats
         loadUserStats();
     };
@@ -136,10 +139,10 @@ function MyProfile() {
     const clearWishlist = () => {
         setWishlistItems([]);
         localStorage.removeItem("wishlist");
-        
+
         // Dispatch custom event to update navbar
         window.dispatchEvent(new CustomEvent('wishlistUpdated'));
-        
+
         loadUserStats();
     };
 
@@ -220,7 +223,7 @@ function MyProfile() {
                                     </button>
                                 );
                             })}
-                            
+
                             <button className="sidebar-item logout-item" onClick={handleLogout}>
                                 <FiLogOut className="sidebar-icon" />
                                 <span>Logout</span>
@@ -232,7 +235,7 @@ function MyProfile() {
                             {activeTab === 'overview' && (
                                 <div className="overview-section">
                                     <h2 className="section-title">Account Overview</h2>
-                                    
+
                                     <div className="overview-grid">
                                         <div className="overview-card">
                                             <div className="card-icon">
@@ -285,7 +288,7 @@ function MyProfile() {
                             {activeTab === 'orders' && (
                                 <div className="orders-section">
                                     <h2 className="section-title">Order History</h2>
-                                    
+
                                     {orders.length === 0 ? (
                                         <div className="empty-orders">
                                             <p>No orders found. Complete a purchase to see your orders here.</p>
@@ -310,9 +313,9 @@ function MyProfile() {
                                                         {(order.items || order.products || []).map((item, index) => (
                                                             <div key={item.id || index} className="order-item">
                                                                 <div className="item-image">
-                                                                    <img 
-                                                                        src={item.image || 'https://via.placeholder.com/60x60?text=Product'} 
-                                                                        alt={item.title || item.name || 'Product'} 
+                                                                    <img
+                                                                        src={item.image || 'https://via.placeholder.com/60x60?text=Product'}
+                                                                        alt={item.title || item.name || 'Product'}
                                                                     />
                                                                 </div>
                                                                 <div className="item-details">
@@ -358,7 +361,7 @@ function MyProfile() {
                                     <div className="wishlist-header-profile">
                                         <h2 className="section-title">My Wishlist</h2>
                                         {wishlistItems.length > 0 && (
-                                            <button 
+                                            <button
                                                 className="clear-wishlist-btn-profile"
                                                 onClick={clearWishlist}
                                             >
@@ -372,7 +375,7 @@ function MyProfile() {
                                             <FiHeart className="empty-icon-profile" />
                                             <h3>Your wishlist is empty</h3>
                                             <p>Save items you love to your wishlist and shop them later</p>
-                                            <button 
+                                            <button
                                                 className="continue-shopping-btn-profile"
                                                 onClick={() => navigate("/")}
                                             >
@@ -390,14 +393,14 @@ function MyProfile() {
                                                         price={item.price}
                                                     />
                                                     <div className="wishlist-item-actions-profile">
-                                                        <button 
+                                                        <button
                                                             className="move-to-cart-btn-profile"
                                                             onClick={() => moveToCart(item)}
                                                         >
                                                             <FiShoppingCart />
                                                             Move to Cart
                                                         </button>
-                                                        <button 
+                                                        <button
                                                             className="remove-from-wishlist-btn-profile"
                                                             onClick={() => removeFromWishlist(item.id)}
                                                         >

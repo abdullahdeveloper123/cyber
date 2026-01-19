@@ -5,6 +5,7 @@ import ProductInfo from "../components/ProductInfo";
 import ProductCard from "../components/ProductCard";
 
 
+
 function ProductDetail() {
 
 
@@ -19,18 +20,18 @@ function ProductDetail() {
                 const res = await fetch(`https://fakestoreapi.com/products/${id}`);
                 const data = await res.json();
                 setProduct(data);
-                
+
                 if (data.category) {
                     const categoryRes = await fetch(`https://fakestoreapi.com/products/category/${data.category}`);
                     const categoryData = await categoryRes.json();
-                    
+
                     const filtered = categoryData
                         .filter(p => p.id !== data.id)
                         .slice(0, 4);
-                    
+
                     setRelatedProducts(filtered);
                 }
-                
+
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -62,7 +63,7 @@ function ProductDetail() {
         <>
             <Navbar />
             <ProductInfo product={product} />
-            
+
             {/* Related Products Section */}
             {relatedProducts.length > 0 && (
                 <div className="related-products-section">

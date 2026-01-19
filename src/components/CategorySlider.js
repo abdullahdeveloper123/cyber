@@ -17,15 +17,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 const CategorySlider = () => {
-    let navigate=useNavigate()
-
-    let [categoriesdata, setCategoriesdata] = useState([])
-
-    async function fetchCategories() {
-        let response = await fetch('https://fakestoreapi.com/products')
+    let navigate = useNavigate()
 
 
-    }
 
     return (
         <div className="cateory_slider">
@@ -55,35 +49,35 @@ const CategorySlider = () => {
                             1024: { slidesPerView: 6 },
                         }}
                     >
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/men's clothing")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/men's clothing") }}>
                             <img src={Phones} alt="" />
                             <p>Smart Phones</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/jewelery")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/jewelery") }}>
                             <img src={SmartWatch} alt="" />
                             <p>Smart Watches</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/electronics")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/electronics") }}>
                             <img src={Camera} alt="" />
                             <p>Camera</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/women's clothing")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/women's clothing") }}>
                             <img src={Headphone} alt="" />
                             <p>Headphones</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/electronics")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/electronics") }}>
                             <img src={Desktop} alt="" />
                             <p>Computers</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/jewelery")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/jewelery") }}>
                             <img src={Games} alt="" />
                             <p>Gaming</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/men's clothing")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/men's clothing") }}>
                             <img src={Laptop} alt="" style={{ width: "48px" }} />
                             <p>Laptops</p>
                         </div></SwiperSlide>
-                        <SwiperSlide><div className="category_item" onClick={()=>{navigate("/products/women's clothing")}}>
+                        <SwiperSlide><div className="category_item" onClick={() => { navigate("/products/women's clothing") }}>
                             <img src={Tools} alt="" style={{ width: "40px" }} />
                             <p>Tools</p>
                         </div></SwiperSlide>

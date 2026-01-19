@@ -64,7 +64,8 @@ function Catalog() {
     };
 
     /* ---------------- SORT PRODUCTS ---------------- */
-    useEffect(() => {
+    /* ---------------- SORT PRODUCTS ---------------- */
+    const sortedProducts = React.useMemo(() => {
         let sorted = [...filteredProducts];
 
         if (sortBy === "rating") {
@@ -83,8 +84,8 @@ function Catalog() {
             sorted.sort((a, b) => b.id - a.id);
         }
 
-        setFilteredProducts(sorted);
-    }, [sortBy]);
+        return sorted;
+    }, [filteredProducts, sortBy]);
 
     return (
         <>
@@ -102,7 +103,7 @@ function Catalog() {
 
                 {/* Filter and Sort Controls - Mobile Only */}
                 <div className="catalog-controls-mobile">
-                    <button 
+                    <button
                         className="filters-btn"
                         onClick={() => setShowFilters(!showFilters)}
                     >
@@ -178,7 +179,7 @@ function Catalog() {
                                             ((maxPrice - priceRange.min) /
                                                 (priceRange.max -
                                                     priceRange.min)) *
-                                                100}%`,
+                                            100}%`,
                                     }}
                                 />
                             </div>
@@ -246,7 +247,7 @@ function Catalog() {
                                             ((maxPrice - priceRange.min) /
                                                 (priceRange.max -
                                                     priceRange.min)) *
-                                                100}%`,
+                                            100}%`,
                                     }}
                                 />
                             </div>
@@ -262,7 +263,7 @@ function Catalog() {
                         {/* Products Result Count and Sort - Desktop */}
                         <div className="catalog-header-desktop">
                             <div className="products-result">
-                                Products Result: <strong>{filteredProducts.length}</strong>
+                                Products Result: <strong>{sortedProducts.length}</strong>
                             </div>
 
                             <div className="sort-dropdown-desktop">
@@ -281,14 +282,14 @@ function Catalog() {
 
                         {/* Products Grid */}
                         <div className="catalog-products-grid">
-                            {filteredProducts.map((p) => (
+                            {sortedProducts.map((p) => (
                                 <div key={p.id} className="catalog-product-card">
                                     <div className="product-card-inner">
                                         <button className="wishlist-btn">
                                             <FiHeart />
                                         </button>
-                                        
-                                        <div 
+
+                                        <div
                                             className="product-image-wrapper"
                                             onClick={() => window.location.href = `/product/${p.id}`}
                                             style={{ cursor: 'pointer' }}
@@ -297,7 +298,7 @@ function Catalog() {
                                         </div>
 
                                         <div className="product-info">
-                                            <h3 
+                                            <h3
                                                 className="product-title"
                                                 onClick={() => window.location.href = `/product/${p.id}`}
                                                 style={{ cursor: 'pointer' }}
@@ -305,7 +306,7 @@ function Catalog() {
                                                 {p.title}
                                             </h3>
                                             <p className="product-price">${p.price}</p>
-                                            <button 
+                                            <button
                                                 className="buy-now-btn"
                                                 onClick={() => window.location.href = `/product/${p.id}`}
                                             >

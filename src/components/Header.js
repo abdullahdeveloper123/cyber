@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom';
 import headerIphone from '../assets/headerIphone.png'
 
 function Header() {
@@ -9,10 +9,10 @@ function Header() {
                     <div className="col-md-6 order-2 order-md-1">
                         <div className="header-content text-center text-md-start">
                             <p className="header-subtitle">Pro.Beyond.</p>
-                            <p className="header-title"><span style={{fontWeight:"300"}}>IPhone 14 </span><strong>Pro</strong></p>
+                            <p className="header-title"><span style={{ fontWeight: "300" }}>IPhone 14 </span><strong>Pro</strong></p>
                             <p className="header-description">Created to change everything for the better. For everyone</p>
                             <div>
-                                <a href="#" className="btn-shop-outline">Shop Now</a>
+                                <Link to="/catalog" className="btn-shop-outline">Shop Now</Link>
                             </div>
                         </div>
                     </div>

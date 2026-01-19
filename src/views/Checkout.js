@@ -24,7 +24,7 @@ function Checkout() {
         }
     ]);
     const [cartItems, setCartItems] = useState([]);
-    
+
     // Payment form state
     const [paymentForm, setPaymentForm] = useState({
         cardholderName: '',
@@ -32,20 +32,20 @@ function Checkout() {
         expiryDate: '',
         cvv: ''
     });
-    
+
     // Payment method tab state
     const [activePaymentTab, setActivePaymentTab] = useState('creditCard');
-    
+
     const { user } = useAuth();
     const navigate = useNavigate();
 
     // Format card number with spaces and fill remaining with placeholder
     const getDisplayCardNumber = () => {
         if (!paymentForm.cardNumber) return '0000 0000 0000 0000';
-        
+
         const cleanNumber = paymentForm.cardNumber.replace(/\s/g, '');
         const paddedNumber = cleanNumber.padEnd(16, '0');
-        
+
         return paddedNumber.match(/.{1,4}/g).join(' ');
     };
 
@@ -82,7 +82,7 @@ function Checkout() {
     // Handle input changes with formatting
     const handleInputChange = (field, value) => {
         let formattedValue = value;
-        
+
         switch (field) {
             case 'cardNumber':
                 formattedValue = formatCardNumber(value);
@@ -96,7 +96,7 @@ function Checkout() {
             default:
                 formattedValue = value;
         }
-        
+
         setPaymentForm(prev => ({
             ...prev,
             [field]: formattedValue
@@ -118,6 +118,8 @@ function Checkout() {
         }
     }, [user, navigate]);
 
+
+
     const handleNext = () => {
         if (currentStep < 3) {
             setCurrentStep(currentStep + 1);
@@ -132,10 +134,10 @@ function Checkout() {
         const newOrder = {
             id: `ORD-${Date.now()}${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
             userId: user?.uid,
-            date: new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            date: new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             }),
             status: 'Processing',
             items: cartItems,
@@ -202,7 +204,7 @@ function Checkout() {
                             </div>
                             <div className={`step-connector ${currentStep > 1 ? 'completed' : ''}`}></div>
                         </div>
-                        
+
                         <div className="step-item">
                             <div className={`step-circle ${currentStep === 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
                                 {currentStep > 2 ? '✓' : <FiTruck />}
@@ -213,7 +215,7 @@ function Checkout() {
                             </div>
                             <div className={`step-connector ${currentStep > 2 ? 'completed' : ''}`}></div>
                         </div>
-                        
+
                         <div className="step-item">
                             <div className={`step-circle ${currentStep === 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}`}>
                                 {currentStep > 3 ? '✓' : <FiCreditCard />}
@@ -230,23 +232,23 @@ function Checkout() {
                         {currentStep === 1 && (
                             <div className="address-step">
                                 <h2 className="step-heading">Select Address</h2>
-                                
+
                                 <div className="address-list">
                                     {addresses.map((address, index) => (
-                                        <div 
-                                            key={address.id} 
+                                        <div
+                                            key={address.id}
                                             className={`address-card ${selectedAddress === index ? 'selected' : ''}`}
                                             onClick={() => setSelectedAddress(index)}
                                         >
                                             <div className="address-radio">
-                                                <input 
-                                                    type="radio" 
-                                                    name="address" 
+                                                <input
+                                                    type="radio"
+                                                    name="address"
                                                     checked={selectedAddress === index}
                                                     onChange={() => setSelectedAddress(index)}
                                                 />
                                             </div>
-                                            
+
                                             <div className="address-content">
                                                 <div className="address-header">
                                                     <span className="address-name">{address.name}</span>
@@ -261,7 +263,7 @@ function Checkout() {
                                             </div>
 
                                             <div className="address-actions">
-                                                <button 
+                                                <button
                                                     className="address-action-btn"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -270,7 +272,7 @@ function Checkout() {
                                                 >
                                                     <FiEdit2 />
                                                 </button>
-                                                <button 
+                                                <button
                                                     className="address-action-btn"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -336,7 +338,7 @@ function Checkout() {
                                     {/* Left Side - Summary */}
                                     <div className="payment-summary">
                                         <h3 className="summary-title">Summary</h3>
-                                        
+
                                         {/* Cart Items */}
                                         <div className="summary-items">
                                             {cartItems.map((item) => (
@@ -390,22 +392,22 @@ function Checkout() {
                                     {/* Right Side - Payment */}
                                     <div className="payment-form-section">
                                         <h3 className="payment-title">Payment</h3>
-                                        
+
                                         {/* Payment Method Tabs */}
                                         <div className="payment-tabs">
-                                            <button 
+                                            <button
                                                 className={`payment-tab ${activePaymentTab === 'creditCard' ? 'active' : ''}`}
                                                 onClick={() => setActivePaymentTab('creditCard')}
                                             >
                                                 Credit Card
                                             </button>
-                                            <button 
+                                            <button
                                                 className={`payment-tab ${activePaymentTab === 'paypal' ? 'active' : ''}`}
                                                 onClick={() => setActivePaymentTab('paypal')}
                                             >
                                                 PayPal
                                             </button>
-                                            <button 
+                                            <button
                                                 className={`payment-tab ${activePaymentTab === 'paypalCredit' ? 'active' : ''}`}
                                                 onClick={() => setActivePaymentTab('paypalCredit')}
                                             >
@@ -442,18 +444,18 @@ function Checkout() {
                                                 <div className="payment-form">
                                                     <div className="form-group">
                                                         <label>Cardholder Name</label>
-                                                        <input 
-                                                            type="text" 
+                                                        <input
+                                                            type="text"
                                                             placeholder="Enter cardholder name"
                                                             value={paymentForm.cardholderName}
                                                             onChange={(e) => handleInputChange('cardholderName', e.target.value)}
                                                         />
                                                     </div>
-                                                    
+
                                                     <div className="form-group">
                                                         <label>Card Number</label>
-                                                        <input 
-                                                            type="text" 
+                                                        <input
+                                                            type="text"
                                                             placeholder="0000 0000 0000 0000"
                                                             value={paymentForm.cardNumber}
                                                             onChange={(e) => handleInputChange('cardNumber', e.target.value)}
@@ -461,12 +463,12 @@ function Checkout() {
                                                             inputMode="numeric"
                                                         />
                                                     </div>
-                                                    
+
                                                     <div className="form-row">
                                                         <div className="form-group">
                                                             <label>Exp Date</label>
-                                                            <input 
-                                                                type="text" 
+                                                            <input
+                                                                type="text"
                                                                 placeholder="MM/YY"
                                                                 value={paymentForm.expiryDate}
                                                                 onChange={(e) => handleInputChange('expiryDate', e.target.value)}
@@ -476,8 +478,8 @@ function Checkout() {
                                                         </div>
                                                         <div className="form-group">
                                                             <label>CVV</label>
-                                                            <input 
-                                                                type="text" 
+                                                            <input
+                                                                type="text"
                                                                 placeholder="123"
                                                                 value={paymentForm.cvv}
                                                                 onChange={(e) => handleInputChange('cvv', e.target.value)}
@@ -499,8 +501,8 @@ function Checkout() {
                                             <div className="paypal-content">
                                                 <div className="paypal-info">
                                                     <div className="paypal-logo">
-                                                        <span style={{color: '#003087', fontWeight: 'bold', fontSize: '24px'}}>Pay</span>
-                                                        <span style={{color: '#009cde', fontWeight: 'bold', fontSize: '24px'}}>Pal</span>
+                                                        <span style={{ color: '#003087', fontWeight: 'bold', fontSize: '24px' }}>Pay</span>
+                                                        <span style={{ color: '#009cde', fontWeight: 'bold', fontSize: '24px' }}>Pal</span>
                                                     </div>
                                                     <p>You will be redirected to PayPal to complete your payment securely.</p>
                                                     <div className="paypal-benefits">
@@ -525,8 +527,8 @@ function Checkout() {
                                             <div className="paypal-credit-content">
                                                 <div className="paypal-credit-info">
                                                     <div className="paypal-credit-logo">
-                                                        <span style={{color: '#003087', fontWeight: 'bold', fontSize: '20px'}}>PayPal</span>
-                                                        <span style={{color: '#009cde', fontWeight: 'bold', fontSize: '20px'}}> Credit</span>
+                                                        <span style={{ color: '#003087', fontWeight: 'bold', fontSize: '20px' }}>PayPal</span>
+                                                        <span style={{ color: '#009cde', fontWeight: 'bold', fontSize: '20px' }}> Credit</span>
                                                     </div>
                                                     <p>Pay in 4 interest-free payments or get special financing offers.</p>
                                                     <div className="paypal-credit-benefits">
@@ -558,10 +560,10 @@ function Checkout() {
                             Back
                         </button>
                         <button className="nav-btn next-btn" onClick={handleNext}>
-                            {currentStep === 3 ? 
-                                (activePaymentTab === 'creditCard' ? 'Pay' : 
-                                 activePaymentTab === 'paypal' ? 'Continue with PayPal' : 
-                                 'Continue with PayPal Credit') 
+                            {currentStep === 3 ?
+                                (activePaymentTab === 'creditCard' ? 'Pay' :
+                                    activePaymentTab === 'paypal' ? 'Continue with PayPal' :
+                                        'Continue with PayPal Credit')
                                 : 'Next'}
                         </button>
                     </div>
