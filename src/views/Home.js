@@ -53,7 +53,6 @@ function Home() {
       (product) => product.category === category
     );
     setFilteredProducts(filtered);
-    console.log(filteredProducts)
   }, [products, category]);
 
   return (

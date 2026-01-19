@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProductInfo from "../components/ProductInfo";
 import ProductCard from "../components/ProductCard";
-import { useAuth } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
 
 
 function ProductDetail() {

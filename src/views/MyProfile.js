@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -19,19 +19,7 @@ function MyProfile() {
     const [orders, setOrders] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
 
-    useEffect(() => {
-        if (!user) {
-            navigate('/login');
-            return;
-        }
-
-        // Load user stats from localStorage or API
-        loadUserStats();
-        loadOrders();
-        loadWishlist();
-    }, [user, navigate]);
-
-    const loadUserStats = () => {
+    const loadUserStats = useCallback(() => {
         // Get orders from localStorage
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         const userOrders = orders.filter(order => order.userId === user?.uid);
@@ -47,9 +35,9 @@ function MyProfile() {
             wishlistItems: wishlist.length,
             displayName: savedProfile.displayName || user?.displayName || ''
         });
-    };
+    }, [user]);
 
-    const loadOrders = () => {
+    const loadOrders = useCallback(() => {
         // Get real orders from localStorage
         const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
         
@@ -83,51 +71,25 @@ function MyProfile() {
         });
         
         setOrders(transformedOrders);
-    };
+    }, [user]);
 
-    // Function to create order from cart (can be called from checkout)
-    const createOrderFromCart = () => {
-        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-        
-        if (cartItems.length === 0) return;
-
-        const newOrder = {
-            id: `ORD-${Date.now()}${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
-            userId: user?.uid,
-            date: new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            }),
-            status: 'Processing',
-            items: cartItems,
-            shipping: {
-                method: 'Standard Delivery',
-                address: '2118 Thornridge Cir Syracuse, Connecticut 35624'
-            },
-            total: cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0)
-        };
-
-        // Save order to localStorage
-        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-        existingOrders.push(newOrder);
-        localStorage.setItem('orders', JSON.stringify(existingOrders));
-
-        // Clear cart after creating order
-        localStorage.setItem('cart', JSON.stringify([]));
-
-        // Reload orders and stats
-        loadOrders();
-        loadUserStats();
-
-        return newOrder;
-    };
-
-    const loadWishlist = () => {
+    const loadWishlist = useCallback(() => {
         // Load wishlist from localStorage
         const savedWishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
         setWishlistItems(savedWishlist);
-    };
+    }, []);
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
+        // Load user stats from localStorage or API
+        loadUserStats();
+        loadOrders();
+        loadWishlist();
+    }, [user, navigate, loadUserStats, loadOrders, loadWishlist]);
 
     const removeFromWishlist = (productId) => {
         const updatedWishlist = wishlistItems.filter(item => item.id !== productId);
