@@ -23,7 +23,7 @@ function Catalog() {
     /* ---------------- FETCH PRODUCTS ---------------- */
     useEffect(() => {
         async function getProducts() {
-            const res = await fetch("https://fakestoreapi.com/products");
+            const res = await fetch(`${process.env.REACT_APP_FAKE_STORE_API_URL}/products`);
             const data = await res.json();
             setProducts(data);
         }

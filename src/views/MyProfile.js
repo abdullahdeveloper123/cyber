@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -29,9 +29,9 @@ function MyProfile() {
         loadUserStats();
         loadOrders();
         loadWishlist();
-    }, [user, navigate, loadUserStats, loadOrders, loadWishlist]);
+    }, [user, navigate]); // Remove function dependencies to avoid initialization issues
 
-    const loadUserStats = React.useCallback(() => {
+    const loadUserStats = useCallback(() => {
         // Get orders from localStorage
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         const userOrders = orders.filter(order => order.userId === user?.uid);
@@ -49,7 +49,7 @@ function MyProfile() {
         });
     }, [user]);
 
-    const loadOrders = React.useCallback(() => {
+    const loadOrders = useCallback(() => {
         // Get real orders from localStorage
         const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
 
@@ -88,7 +88,7 @@ function MyProfile() {
     // Function to create order from cart (can be called from checkout)
 
 
-    const loadWishlist = React.useCallback(() => {
+    const loadWishlist = useCallback(() => {
         // Load wishlist from localStorage
         const savedWishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
         setWishlistItems(savedWishlist);
@@ -314,7 +314,7 @@ function MyProfile() {
                                                             <div key={item.id || index} className="order-item">
                                                                 <div className="item-image">
                                                                     <img
-                                                                        src={item.image || 'https://via.placeholder.com/60x60?text=Product'}
+                                                                        src={item.image || `${process.env.REACT_APP_PLACEHOLDER_IMAGE_URL}/60x60?text=Product`}
                                                                         alt={item.title || item.name || 'Product'}
                                                                     />
                                                                 </div>

@@ -2,6 +2,34 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment Variables Setup
+
+Before running the application, you need to set up your environment variables:
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your actual values:
+   - **Firebase Configuration**: Get these from your Firebase project settings
+   - **API Endpoints**: Configure your API base URLs
+   - **Social Media Links**: Update with your actual social media profiles
+
+### Required Environment Variables
+
+- `REACT_APP_FIREBASE_API_KEY`: Your Firebase API key
+- `REACT_APP_FIREBASE_AUTH_DOMAIN`: Your Firebase auth domain
+- `REACT_APP_FIREBASE_PROJECT_ID`: Your Firebase project ID
+- `REACT_APP_FIREBASE_STORAGE_BUCKET`: Your Firebase storage bucket
+- `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`: Your Firebase messaging sender ID
+- `REACT_APP_FIREBASE_APP_ID`: Your Firebase app ID
+- `REACT_APP_FAKE_STORE_API_URL`: Base URL for the Fake Store API
+- `REACT_APP_PLACEHOLDER_IMAGE_URL`: Base URL for placeholder images
+- Social media URLs for footer links
+
+**⚠️ Important**: Never commit your `.env` file to version control. It's already included in `.gitignore`.
+
 ## Available Scripts
 
 In the project directory, you can run:

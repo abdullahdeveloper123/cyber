@@ -8,6 +8,7 @@ import AdProducts from '../components/AdProducts'
 // import DiscountProducts from '../components/DiscountProducts'
 import AdBanner from '../components/AdBanner'
 import Footer from '../components/footer'
+import { env } from '../utils/env'
 
 
 
@@ -23,7 +24,7 @@ function Home() {
 
   useEffect(() => {
     async function getProducts() {
-      const res = await fetch("https://fakestoreapi.com/products");
+      const res = await fetch(`${env.api.fakeStoreUrl}/products`);
       const data = await res.json();
       setProducts(data);
     }

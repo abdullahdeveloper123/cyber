@@ -145,7 +145,7 @@ function ProductInfo({ product }) {
             };
 
             // Call API to save cart on server
-            const response = await fetch('https://fakestoreapi.com/carts', {
+            const response = await fetch(`${process.env.REACT_APP_FAKE_STORE_API_URL}/carts`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
