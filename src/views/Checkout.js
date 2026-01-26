@@ -501,8 +501,8 @@ function Checkout() {
                                             <div className="paypal-content">
                                                 <div className="paypal-info">
                                                     <div className="paypal-logo">
-                                                        <span style={{ color: '#003087', fontWeight: 'bold', fontSize: '24px' }}>Pay</span>
-                                                        <span style={{ color: '#009cde', fontWeight: 'bold', fontSize: '24px' }}>Pal</span>
+                                                        <span className="paypal-blue">Pay</span>
+                                                        <span className="paypal-light-blue">Pal</span>
                                                     </div>
                                                     <p>You will be redirected to PayPal to complete your payment securely.</p>
                                                     <div className="paypal-benefits">
@@ -527,8 +527,8 @@ function Checkout() {
                                             <div className="paypal-credit-content">
                                                 <div className="paypal-credit-info">
                                                     <div className="paypal-credit-logo">
-                                                        <span style={{ color: '#003087', fontWeight: 'bold', fontSize: '20px' }}>PayPal</span>
-                                                        <span style={{ color: '#009cde', fontWeight: 'bold', fontSize: '20px' }}> Credit</span>
+                                                        <span className="paypal-blue-small">PayPal</span>
+                                                        <span className="paypal-light-blue-small"> Credit</span>
                                                     </div>
                                                     <p>Pay in 4 interest-free payments or get special financing offers.</p>
                                                     <div className="paypal-credit-benefits">

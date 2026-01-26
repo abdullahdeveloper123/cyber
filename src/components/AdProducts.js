@@ -31,7 +31,7 @@ function AdProducts() {
                         <a href="">Shop Now</a>
                     </div>
                 </div>
-                <div className="col-md-3" style={{ background: "#EAEAEA" }}>
+                <div className="col-md-3 ad-light-gray-bg">
                     <div className="adCard">
                         <img src={Samsung} alt="" />
                         <h3>Samsung Galaxy </h3>
@@ -39,7 +39,7 @@ function AdProducts() {
                         <a href="">Shop Now</a>
                     </div>
                 </div>
-                <div className="col-md-3" style={{ background: "#2C2C2C" }}>
+                <div className="col-md-3 ad-dark-gray-bg">
                     <div className="adCard last_ad_child">
                         <img src={AdMac} alt="" />
                         <h3>Macbook Pro</h3>
@@ -84,9 +84,7 @@ function AdProducts() {
                         <a href="">Shop Now</a>
                     </div></SwiperSlide>
                     <SwiperSlide>
-                        <div className="wrapper" style={{ background: "#2C2C2C" }}>
-
-
+                        <div className="wrapper ad-dark-gray-bg">
                             <div className="adCard last_ad_child" >
                                 <img src={AdMac} alt="" />
                                 <h3>Macbook Pro</h3>

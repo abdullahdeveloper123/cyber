@@ -19,11 +19,11 @@ function ProductInfo({ product }) {
 
     // Mock data for colors (since API doesn't provide this)
     const colors = [
-        { name: "Black", hex: "#000000" },
-        { name: "Purple", hex: "#800080" },
-        { name: "Red", hex: "#FF0000" },
-        { name: "Gold", hex: "#FFD700" },
-        { name: "Silver", hex: "#C0C0C0" }
+        { name: "Black", hex: "var(--color-primary)", class: "color-black" },
+        { name: "Purple", hex: "var(--color-product-purple)", class: "color-purple" },
+        { name: "Red", hex: "var(--color-product-red)", class: "color-red" },
+        { name: "Gold", hex: "var(--color-product-gold)", class: "color-gold" },
+        { name: "Silver", hex: "var(--color-product-silver)", class: "color-silver" }
     ];
 
     // Mock storage options
