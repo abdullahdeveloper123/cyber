@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BsHeart, BsCart, BsPerson, BsSearch } from "react-icons/bs";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import Logo from '../assets/Logo.png';
@@ -9,10 +10,12 @@ import Logo from '../assets/Logo.png';
 
 function Navbar() {
     const { user } = useAuth();
+    const { searchQuery, setSearchQuery } = useSearch();
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
     const [wishlistCount, setWishlistCount] = useState(0);
+    const [localSearchQuery, setLocalSearchQuery] = useState('');
 
     // Load cart and wishlist counts
     useEffect(() => {
@@ -82,6 +85,24 @@ function Navbar() {
     const closeDropdown = () => {
         setIsDropdownOpen(false);
     };
+
+    // Handle search
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (localSearchQuery.trim()) {
+            navigate(`/search?q=${encodeURIComponent(localSearchQuery.trim())}`);
+        }
+    };
+
+    const handleSearchInputChange = (e) => {
+        setLocalSearchQuery(e.target.value);
+    };
+
+    const handleSearchKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(e);
+        }
+    };
     return (
         <nav className="navbar navbar-expand-lg navbar-custom">
             <div className="container">
@@ -92,8 +113,15 @@ function Navbar() {
 
                 {/* Search Bar - Hidden on mobile toggle, visible on lg */}
                 <div className="d-none d-lg-flex search-container">
-                    <BsSearch className="search-icon" />
-                    <input type="text" className="search-input" placeholder="Search" />
+                    <BsSearch className="search-icon" onClick={handleSearch} style={{ cursor: 'pointer' }} />
+                    <input 
+                        type="text" 
+                        className="search-input" 
+                        placeholder="Search products..." 
+                        value={localSearchQuery}
+                        onChange={handleSearchInputChange}
+                        onKeyPress={handleSearchKeyPress}
+                    />
                 </div>
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
